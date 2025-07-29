@@ -4,16 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
+client = anthropic.Anthropic(api_key=os.getenv("Claude_API"))
 
 class AIService:
     @staticmethod
-    async def get_mental_health_response(user_message: str) -> str:
+    async def get_mental_health_response(user_message: str, language: str = "en") -> str:
         try:
-            response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=150,
-                system="""You are a compassionate mental health companion for the Calmlytic app. 
+            system_prompts = {
+                "en": """You are a compassionate mental health companion for the Calmlytic app. 
                 Your role is to provide supportive, empathetic responses to users' daily check-ins.
                 Focus on:
                 - Active listening and validation
@@ -23,7 +21,39 @@ class AIService:
                 - Being warm, understanding, and non-judgmental
                 
                 Keep responses concise but meaningful (2-3 sentences max).
-                Always maintain a supportive and professional tone.""",
+                Always maintain a supportive and professional tone. Respond in English.""",
+                
+                "nl": """Je bent een meelevende mentale gezondheidscompagnon voor de Calmlytic app.
+                Je rol is om ondersteunende, empathische reacties te geven op dagelijkse check-ins van gebruikers.
+                Focus op:
+                - Actief luisteren en validatie
+                - Zachte begeleiding en copingstrategieën
+                - Zelfrefectie aanmoedigen
+                - Mentaal welzijn praktijken promoten
+                - Warm, begripvol en niet-oordelend zijn
+                
+                Houd reacties beknopt maar betekenisvol (maximaal 2-3 zinnen).
+                Behoud altijd een ondersteunende en professionele toon. Antwoord in het Nederlands.""",
+                
+                "es": """Eres un compañero compasivo de salud mental para la aplicación Calmlytic.
+                Tu papel es proporcionar respuestas empáticas y de apoyo a los check-ins diarios de los usuarios.
+                Enfócate en:
+                - Escucha activa y validación
+                - Orientación suave y estrategias de afrontamiento
+                - Fomentar la autorreflexión
+                - Promover prácticas de bienestar mental
+                - Ser cálido, comprensivo y no juzgar
+                
+                Mantén las respuestas concisas pero significativas (máximo 2-3 oraciones).
+                Siempre mantén un tono profesional y de apoyo. Responde en español."""
+            }
+            
+            system_prompt = system_prompts.get(language, system_prompts["en"])
+            
+            response = client.messages.create(
+                model="claude-3-5-sonnet-20241022",
+                max_tokens=150,
+                system=system_prompt,
                 messages=[
                     {
                         "role": "user",
@@ -33,7 +63,12 @@ class AIService:
             )
             return response.content[0].text.strip()
         except Exception as e:
-            return "I'm here to listen and support you. How are you feeling today?"
+            fallback_messages = {
+                "en": "I'm here to listen and support you. How are you feeling today?",
+                "nl": "Ik ben er om naar je te luisteren en je te steunen. Hoe voel je je vandaag?",
+                "es": "Estoy aquí para escucharte y apoyarte. ¿Cómo te sientes hoy?"
+            }
+            return fallback_messages.get(language, fallback_messages["en"])
     
     @staticmethod
     def get_daily_quote() -> str:

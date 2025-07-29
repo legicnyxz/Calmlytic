@@ -75,7 +75,7 @@ async def create_chat_session(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    ai_response = await AIService.get_mental_health_response(chat_message.message)
+    ai_response = await AIService.get_mental_health_response(chat_message.message, chat_message.language)
     
     db_chat = ChatSession(
         user_id=current_user.id,

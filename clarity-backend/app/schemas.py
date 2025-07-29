@@ -24,6 +24,7 @@ class TokenData(BaseModel):
 
 class ChatMessage(BaseModel):
     message: str
+    language: str = "en"
 
 class ChatResponse(BaseModel):
     id: int

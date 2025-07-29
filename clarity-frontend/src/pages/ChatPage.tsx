@@ -8,6 +8,14 @@ import { toast } from 'sonner'
 
 const API_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:8000'
 
+const LANGUAGES = {
+  en: 'English',
+  nl: 'Nederlands', 
+  es: 'Español'
+} as const
+
+type Language = keyof typeof LANGUAGES
+
 interface ChatMessage {
   id: number
   message: string
@@ -18,6 +26,9 @@ interface ChatMessage {
 const ChatPage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState('')
+  const [language, setLanguage] = useState<Language>(() => {
+    return (localStorage.getItem('language') as Language) || 'en'
+  })
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -29,6 +40,10 @@ const ChatPage = () => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    localStorage.setItem('language', language)
+  }, [language])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -55,7 +70,8 @@ const ChatPage = () => {
 
     try {
       const response = await axios.post(`${API_URL}/chat`, {
-        message: messageText
+        message: messageText,
+        language: language
       })
       
       setMessages(prev => [...prev, response.data])
@@ -88,10 +104,21 @@ const ChatPage = () => {
 
         <Card className="h-[600px] flex flex-col">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Bot className="h-5 w-5 text-blue-600" />
-              <span>Calmlytic AI Companion</span>
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <Bot className="h-5 w-5 text-blue-600" />
+                <span>Calmlytic AI Companion</span>
+              </CardTitle>
+              <select 
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as Language)}
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm"
+              >
+                {Object.entries(LANGUAGES).map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
+                ))}
+              </select>
+            </div>
           </CardHeader>
           
           <CardContent className="flex-1 flex flex-col">
