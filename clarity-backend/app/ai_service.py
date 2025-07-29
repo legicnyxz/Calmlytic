@@ -13,7 +13,7 @@ class AIService:
             response = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
                 max_tokens=150,
-                system="""You are a compassionate mental health companion for the Clarity app. 
+                system="""You are a compassionate mental health companion for the Calmlytic app. 
                 Your role is to provide supportive, empathetic responses to users' daily check-ins.
                 Focus on:
                 - Active listening and validation

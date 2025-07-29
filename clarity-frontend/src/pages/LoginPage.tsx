@@ -34,7 +34,7 @@ const LoginPage = () => {
           <div className="mx-auto w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">C</span>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome to Clarity</CardTitle>
+          <CardTitle className="text-2xl font-bold">Welcome to Calmlytic</CardTitle>
           <CardDescription>
             Sign in to your account to continue your mental wellness journey
           </CardDescription>

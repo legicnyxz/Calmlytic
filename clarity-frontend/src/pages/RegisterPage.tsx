@@ -46,7 +46,7 @@ const RegisterPage = () => {
           <div className="mx-auto w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">C</span>
           </div>
-          <CardTitle className="text-2xl font-bold">Join Clarity</CardTitle>
+          <CardTitle className="text-2xl font-bold">Join Calmlytic</CardTitle>
           <CardDescription>
             Create your account to start your mental wellness journey
           </CardDescription>

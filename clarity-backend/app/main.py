@@ -20,7 +20,7 @@ from .ai_service import AIService
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Clarity API", description="Mental Reset App API")
+app = FastAPI(title="Calmlytic API", description="Mental Reset App API")
 
 # Disable CORS. Do not remove this for full-stack development.
 app.add_middleware(

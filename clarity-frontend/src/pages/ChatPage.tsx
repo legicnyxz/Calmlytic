@@ -90,7 +90,7 @@ const ChatPage = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Bot className="h-5 w-5 text-blue-600" />
-              <span>Clarity AI Companion</span>
+              <span>Calmlytic AI Companion</span>
             </CardTitle>
           </CardHeader>
           
